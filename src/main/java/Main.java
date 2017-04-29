@@ -1,6 +1,7 @@
 import org.apache.poi.hssf.usermodel.HSSFCell;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,11 +30,11 @@ public class Main {
         String nameEN = null;
 
         XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(file));
-        XSSFSheet myExcelSheet = myExcelBook.getSheet("province");
+        XSSFSheet myExcelSheet = myExcelBook.getSheet("city");
 
 
 
-        for (int i=1;i<2013;i++ ) {
+        for (int i=1;i<143;i++ ) {
 
             XSSFRow row = myExcelSheet.getRow(i);
             if (row.getCell(0).getCellType() == HSSFCell.CELL_TYPE_STRING) {
@@ -47,7 +48,7 @@ public class Main {
                 //System.out.println(nameEN);
             }
 
-            fromFile.put(nameRu, nameEN);
+            fromFile.put(nameEN, nameRu);
         }
 
 
@@ -64,21 +65,26 @@ public class Main {
         XSSFWorkbook myExcelBook = new XSSFWorkbook(new FileInputStream(file));
         XSSFSheet myExcelSheet = myExcelBook.getSheet("1");
 
-        System.out.println("setup1" );
+//        System.out.println("setup1" );
 
         for (int i = 3;i < 3105;i++) {
 
-            XSSFRow row = myExcelSheet.getRow(3);
+            XSSFRow row = myExcelSheet.getRow(i);
 
-            System.out.println("setup2");
-            if (row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING) {
-                name = row.getCell(1).getStringCellValue();
-            }
+            if (row.getCell(1) != null) {
+//                if (row.getCell(1) == null) {
+//                    System.out.println("setup3");
+//                }
+                if (row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING) {
+                    name = row.getCell(1).getStringCellValue();
+                }
 
-            if (fromFile.containsValue(name)) {
-                Cell nameEn = row.createCell(2);
-                nameEn.setCellValue(fromFile.get(name));
-                System.out.println("setup2");
+                if (fromFile.containsKey(name)) {
+
+                    Cell nameEn = row.createCell(2);
+                    nameEn.setCellValue(fromFile.get(name));
+                    System.out.println(nameEn);
+                }
             }
 
         }
